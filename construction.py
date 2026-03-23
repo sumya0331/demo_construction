@@ -33,10 +33,10 @@ def load_data(file):
 df_project, df_schedule, df_costs, df_materials = load_data(uploaded_file)
 
 
-df_costs['Budget'] = pd.to_numeric(df_costs['Budget'], errors='coerce')
-df_costs['Actual'] = pd.to_numeric(df_costs['Actual'], errors='coerce')
-df_materials['Qty_Planned'] = pd.to_numeric(df_materials['Qty_Planned'], errors='coerce')
-df_materials['Qty_Used'] = pd.to_numeric(df_materials['Qty_Used'], errors='coerce')
+#df_costs['Budget'] = pd.to_numeric(df_costs['Budget'], errors='coerce')
+#df_costs['Actual'] = pd.to_numeric(df_costs['Actual'], errors='coerce')
+#df_materials['Qty_Planned'] = pd.to_numeric(df_materials['Qty_Planned'], errors='coerce')
+#df_materials['Qty_Used'] = pd.to_numeric(df_materials['Qty_Used'], errors='coerce')
 
 
 budget_total = df_costs['Budget'].sum()
