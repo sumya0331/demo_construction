@@ -19,10 +19,10 @@ if not uploaded_file:
 @st.cache_data
 def load_data(file):
     try:
-        df_project = pd.read_excel(file, sheet_name="Project_Info")
-        df_schedule = pd.read_excel(file, sheet_name="Schedule")
-        df_costs = pd.read_excel(file, sheet_name="Costs")
-        df_materials = pd.read_excel(file, sheet_name="Materials")
+        df_project = pd.read_excel(file, sheet_name="Төслийн мэдээлэл")
+        df_schedule = pd.read_excel(file, sheet_name="Хугацаа")
+        df_costs = pd.read_excel(file, sheet_name="Зардал")
+        df_materials = pd.read_excel(file, sheet_name="Материал")
     except Exception as e:
         st.error("Excel sheet structure буруу байна!")
         st.stop()
