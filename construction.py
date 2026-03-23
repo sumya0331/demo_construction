@@ -3,7 +3,7 @@ import pandas as pd
 
 
 st.set_page_config(page_title="Construction Dashboard", layout="wide")
-st.title("🏗 Construction Project Dashboard")
+st.title("🏗 Construction Dashboard (No Progress Sheet)")
 
 
 uploaded_file = st.file_uploader(
@@ -19,10 +19,10 @@ if not uploaded_file:
 @st.cache_data
 def load_data(file):
     try:
-        df_project = pd.read_excel(file, sheet_name="Төслийн мэдээлэл")
-        df_schedule = pd.read_excel(file, sheet_name="Хугацаа")
-        df_costs = pd.read_excel(file, sheet_name="Зардал")
-        df_materials = pd.read_excel(file, sheet_name="Материал")
+        df_project = pd.read_excel(file, sheet_name="Project_Info")
+        df_schedule = pd.read_excel(file, sheet_name="Schedule")
+        df_costs = pd.read_excel(file, sheet_name="Costs")
+        df_materials = pd.read_excel(file, sheet_name="Materials")
     except Exception as e:
         st.error("Excel sheet structure буруу байна!")
         st.stop()
@@ -33,14 +33,11 @@ def load_data(file):
 df_project, df_schedule, df_costs, df_materials = load_data(uploaded_file)
 
 
-df_schedule['Progress'] = pd.to_numeric(df_schedule['Progress'], errors='coerce')
 df_costs['Budget'] = pd.to_numeric(df_costs['Budget'], errors='coerce')
 df_costs['Actual'] = pd.to_numeric(df_costs['Actual'], errors='coerce')
 df_materials['Qty_Planned'] = pd.to_numeric(df_materials['Qty_Planned'], errors='coerce')
 df_materials['Qty_Used'] = pd.to_numeric(df_materials['Qty_Used'], errors='coerce')
 
-
-progress = df_schedule['Progress'].mean()
 
 budget_total = df_costs['Budget'].sum()
 actual_total = df_costs['Actual'].sum()
@@ -51,21 +48,14 @@ material_usage = (
     if df_materials['Qty_Planned'].sum() != 0 else 0
 )
 
+
 st.subheader("📊 Key Metrics")
 
-col1, col2, col3 = st.columns(3)
-
-col1.metric("Project Progress", f"{progress:.2f}%")
-col2.metric("Budget Utilization", f"{budget_util*100:.2f}%")
-col3.metric("Material Usage", f"{material_usage*100:.2f}%")
+col1, col2 = st.columns(2)
+col1.metric("Budget Utilization", f"{budget_util*100:.2f}%")
+col2.metric("Material Usage", f"{material_usage*100:.2f}%")
 
 
-
-st.subheader("📅 Task Progress")
-if 'Task_Name' in df_schedule.columns:
-    st.bar_chart(df_schedule.set_index('Task_Name')['Progress'])
-else:
-    st.warning("Task_Name column олдсонгүй!")
 
 st.subheader("💰 Budget vs Actual")
 if 'Cost_Type' in df_costs.columns:
